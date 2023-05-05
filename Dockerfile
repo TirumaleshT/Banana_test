@@ -7,7 +7,8 @@ WORKDIR /
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y git awscli gcc g++ make cmake
+RUN apt-get update && apt-get install -y git awscli gcc g++ make cmake \
+	libgl1-mesa-glx ffmpeg libsm6 libxext6
 
 # Install python packages
 ADD requirements.txt requirements.txt
