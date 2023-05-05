@@ -11,11 +11,13 @@ app = Potassium("my_app")
 # @app.init runs at startup, and loads models into the app's context
 @app.init
 def init():
+    print('-----loading model--------')
     model = loadModel("cb", num_class=3)
    
     context = {
         "model": model
     }
+    print('-----model loaded--------')
 
     return context
 
@@ -25,6 +27,7 @@ def handler(context: dict, request: Request) -> Response:
     file_path = request.json.get('page_path', '')
     file_id = request.json.get('doc_id', '')
     data = request.json.get('checkbox_data')
+    print('-----predicting--------')
     
     cb_predictor = context.get("model")
     
@@ -32,7 +35,8 @@ def handler(context: dict, request: Request) -> Response:
     
     img = hp.download_page_s3(file_path, file_name, file_id,
                               env_config.TEMP_FILES_PATH)
-
+                              
+    print('-----downloading image from S3--------')
     return_data = []
 
     for i in data:
@@ -59,6 +63,7 @@ def handler(context: dict, request: Request) -> Response:
             return_data.append(i)
         else:
             pass
+    print('-----completed prediction--------')
 
     return Response(
         json = {"Response": return_data}, 

@@ -43,6 +43,7 @@ def loadModel(class_name, num_class):
     if class_name == 'cb':
         cfg = get_cfg()
         cfg.MODEL.DEVICE = env_config.DEVICE
+        print('device===', env_config.DEVICE)
         # cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_101_FPN_3x.yaml"))
         cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
         cfg.DATASETS.TRAIN = (class_name,)
