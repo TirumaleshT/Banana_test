@@ -8,6 +8,11 @@ import env_config
 
 app = Potassium("my_app")
 
+
+if env_config.RETRIEVE_AWS_CONFIGS:
+    hp.fill_common_configs_from_aws()
+
+
 # @app.init runs at startup, and loads models into the app's context
 @app.init
 def init():
@@ -30,8 +35,11 @@ def handler(context: dict, request: Request) -> Response:
     print('-----predicting--------')
     
     cb_predictor = context.get("model")
+   
     
-    file_name = '{}_{}_{}'.format(file_id, os.path.split(file_path)[1])
+    file_name = '{}_{}'.format(file_id, os.path.split(file_path)[1])
+    if not os.path.exists(env_config.TEMP_FILES_PATH):
+        os.mkdir(env_config.TEMP_FILES_PATH)
     
     img = hp.download_page_s3(file_path, file_name, file_id,
                               env_config.TEMP_FILES_PATH)
